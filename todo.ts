@@ -1,156 +1,77 @@
-
 interface TodoItem {
     id: number;
-    text: string;
+    title: string;
     completed: boolean;
 }
 
-class TodoListApp {
-    private tasks: TodoItem[] = [];
+class TodoList {
+    private todos: TodoItem[] = [];
     private nextId: number = 1;
-    private taskInput: HTMLInputElement;
-    private taskList: HTMLUListElement;
 
-    constructor() {
-        console.log('Initializing TodoListApp...');
-        this.taskInput = document.getElementById('taskInput') as HTMLInputElement;
-        this.taskList = document.getElementById('taskList') as HTMLUListElement;
-        
-        if (!this.taskInput || !this.taskList) {
-            console.error('Missing required DOM elements');
-            throw new Error('Could not initialize TodoListApp - missing DOM elements');
-        }
-        
-        this.setupEventListeners();
-        console.log('TodoListApp initialized successfully');
-    }
-
-    private setupEventListeners(): void {
-        const addButton = document.querySelector('button');
-        if (addButton) {
-            addButton.addEventListener('click', () => this.addTask());
-        }
-
-        this.taskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.addTask();
-            }
-        });
-    }
-
-    private addTask(): void {
-        const taskText = this.taskInput.value.trim();
-        
-        if (taskText === '') {
-            console.warn('Empty task text, ignoring...');
-            return;
-        }
-
-        const newTask: TodoItem = {
+    addTodo(title: string): TodoItem {
+        const todo: TodoItem = {
             id: this.nextId++,
-            text: taskText,
+            title: title,
             completed: false
         };
-
-        this.tasks.push(newTask);
-        console.log(`Added new task: ${taskText} (ID: ${newTask.id})`);
-        this.renderTask(newTask);
-        this.taskInput.value = '';
+        this.todos.push(todo);
+        return todo;
     }
 
-    private renderTask(task: TodoItem): void {
-        const li = document.createElement('li');
-        li.dataset.id = task.id.toString();
-
-        const span = document.createElement('span');
-        span.textContent = task.text;
-        if (task.completed) {
-            span.style.textDecoration = 'line-through';
-            span.style.color = '#888';
-        }
-
-        span.addEventListener('click', () => this.toggleTaskCompletion(task.id));
-
-        const editBtn = document.createElement('button');
-        editBtn.textContent = 'Edit';
-        editBtn.className = 'edit';
-        editBtn.addEventListener('click', () => this.editTask(task.id));
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.className = 'delete';
-        deleteBtn.addEventListener('click', () => this.deleteTask(task.id));
-
-        const buttonsDiv = document.createElement('div');
-        buttonsDiv.className = 'buttons';
-        buttonsDiv.appendChild(editBtn);
-        buttonsDiv.appendChild(deleteBtn);
-
-        li.appendChild(span);
-        li.appendChild(buttonsDiv);
-
-        this.taskList.appendChild(li);
+    removeTodo(id: number): boolean {
+        const index = this.todos.findIndex(todo => todo.id === id);
+        if (index === -1) return false;
+        this.todos.splice(index, 1);
+        return true;
     }
 
-    private editTask(id: number): void {
-        const task = this.tasks.find(t => t.id === id);
-        if (!task) {
-            console.warn(`Task with ID ${id} not found`);
-            return;
-        }
-
-        const newTaskText = prompt('Edit task:', task.text);
-        if (newTaskText === null) return;
-        
-        const trimmedText = newTaskText.trim();
-        if (trimmedText === '') {
-            console.warn('Empty task text provided, ignoring...');
-            return;
-        }
-
-        task.text = trimmedText;
-        console.log(`Updated task ID ${id}: ${trimmedText}`);
-        this.refreshTaskList();
+    toggleTodo(id: number): boolean {
+        const todo = this.todos.find(todo => todo.id === id);
+        if (!todo) return false;
+        todo.completed = !todo.completed;
+        return true;
     }
 
-    private deleteTask(id: number): void {
-        const taskIndex = this.tasks.findIndex(task => task.id === id);
-        if (taskIndex === -1) {
-            console.warn(`Task with ID ${id} not found`);
-            return;
-        }
-
-        const removedTask = this.tasks[taskIndex];
-        this.tasks = this.tasks.filter(task => task.id !== id);
-        console.log(`Deleted task: ${removedTask.text} (ID: ${id})`);
-        
-        const taskElement = document.querySelector(`li[data-id="${id}"]`);
-        if (taskElement) {
-            taskElement.remove();
-        }
+    listTodos(): TodoItem[] {
+        return [...this.todos];
     }
 
-    private toggleTaskCompletion(taskId: number): void {
-        const task = this.tasks.find(t => t.id === taskId);
-        if (!task) {
-            console.warn(`Task with ID ${taskId} not found`);
-            return;
-        }
-
-        task.completed = !task.completed;
-        console.log(`Toggled task completion for ID ${taskId}: ${task.text}`);
-        this.refreshTaskList();
+    clearCompleted(): number {
+        const completedCount = this.todos.filter(todo => todo.completed).length;
+        this.todos = this.todos.filter(todo => !todo.completed);
+        return completedCount;
     }
 
-    private refreshTaskList(): void {
-        console.log('Refreshing task list...');
-        this.taskList.innerHTML = '';
-        this.tasks.forEach(task => this.renderTask(task));
-        console.log(`Task list refreshed. Total tasks: ${this.tasks.length}`);
+    getTodoCount(): { total: number; completed: number } {
+        const completed = this.todos.filter(todo => todo.completed).length;
+        return {
+            total: this.todos.length,
+            completed
+        };
     }
 }
 
-// Initialize the app when the DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new TodoListApp();
+// Example usage:
+const todoList = new TodoList();
+
+// Add some todos
+const todo1 = todoList.addTodo("Learn TypeScript");
+const todo2 = todoList.addTodo("Build Todo App");
+
+// Display todos
+console.log("\nCurrent Todos:");
+todoList.listTodos().forEach(todo => {
+    console.log(`${todo.id}: ${todo.title} ${todo.completed ? "(✓)" : "(✗)"}`);
+});
+
+// Toggle a todo
+todoList.toggleTodo(todo1.id);
+
+// Remove a todo
+todoList.removeTodo(todo2.id);
+
+// Show final state
+console.log("\nFinal Todos:");
+todoList.listTodos().forEach(todo => {
+    console.log(`${todo.id}: ${todo.title} ${todo.completed ? "(✓)" : "(✗)"}`);
 });

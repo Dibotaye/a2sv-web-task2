@@ -1,52 +1,57 @@
-# TypeScript Todo List App
+# TypeScript Todo List Application
 
-A modern, type-safe Todo List application built with TypeScript.
+A simple Todo List application built with TypeScript that allows you to manage your tasks effectively.
 
 ## Features
 
-- Add new tasks with Enter key or Add button
-- Edit existing tasks
-- Delete tasks
+- Add new tasks
+- Remove tasks
 - Toggle task completion status
-- Clean and responsive UI
-- Type-safe implementation
-- Console logging for debugging
-
-## Technologies Used
-
-- TypeScript
-- HTML5
-- CSS3
+- List all tasks
+- Clear completed tasks
+- Get task statistics
 
 ## Setup Instructions
 
-1. Install TypeScript globally (if not installed):
+1. Ensure you have Node.js installed on your system
+2. Install TypeScript globally if not already installed:
    ```bash
    npm install -g typescript
    ```
 
-2. Compile the TypeScript:
-   ```bash
-   tsc
-   ```
-
-3. Open `index.html` in your web browser
-
 ## Usage
 
-1. Enter a task in the input field
-2. Press Enter or click "Add" to add the task
-3. Click on a task to toggle its completion status
-4. Click "Edit" to modify a task
-5. Click "Delete" to remove a task
+1. Open `todo.ts` in your TypeScript environment
+2. Compile the TypeScript file:
+   ```bash
+   tsc todo.ts
+   ```
+3. Run the compiled JavaScript file:
+   ```bash
+   node todo.js
+   ```
+
+## Example Output
+
+```
+Current Todos:
+1: Learn TypeScript (✗)
+2: Build Todo App (✗)
+
+Final Todos:
+1: Learn TypeScript (✓)
+```
 
 ## Project Structure
 
-- `todo.ts`: Main TypeScript source code
-- `index.html`: HTML structure and styling
-- `tsconfig.json`: TypeScript configuration
-- `dist/`: Compiled JavaScript files
+- `todo.ts`: Main application file containing TodoList class and TodoItem interface
+- [README.md](https://github.com/ruye19/campusOverflow/blob/main/models/README.md): Project documentation
+
+## Technologies Used
+
+- TypeScript
+- JavaScript
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is for educational purposes only.
