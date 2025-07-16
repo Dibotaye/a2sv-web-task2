@@ -30,28 +30,20 @@ A simple Todo List application built with TypeScript that allows you to manage y
    ```bash
    node todo.js
    ```
-
-## Example Output
-
-```
-Current Todos:
-1: Learn TypeScript (✗)
-2: Build Todo App (✗)
-
-Final Todos:
-1: Learn TypeScript (✓)
-```
-
-## Project Structure
-
-- `todo.ts`: Main application file containing TodoList class and TodoItem interface
-- [README.md](https://github.com/ruye19/campusOverflow/blob/main/models/README.md): Project documentation
-
-## Technologies Used
+4. ## Technologies Used
 
 - TypeScript
-- JavaScript
+- HTML5
+- CSS3
+- bootstrap
+- DOM Manipulation
 
-## License
+5. ### Main Page
+![Main View](/screenshot/Screenshot%202025-07-16%20133727.png)
+This is the main page where you can enter tasks.
 
-This project is for educational purposes only.
+### Editing and delete a Task
+![Edit Task and Delete Task](/screenshot/Screenshot%202025-07-16%20133938.png)
+Tasks can be edited by clicking the Edit button.
+Tasks can be deleted by clicking the Delete button.
+
